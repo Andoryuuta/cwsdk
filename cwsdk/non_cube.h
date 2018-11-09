@@ -50,9 +50,9 @@ struct STDMapBinTreeNode
 /* 102 */
 struct STDVector
 {
-	int Start;
-	int End;
-	int Cap;
+	uint32_t Start;
+	uint32_t End;
+	uint32_t Cap;
 };
 
 /* 106 */
@@ -74,39 +74,34 @@ struct map_uint64_uint32_node
 	int value;
 };
 
-
-
-
-
-
 /* 130 */
 struct ItemAdaption
 {
-	char x;
-	char y;
-	char z;
-	char material;
-	__int16 unk_level_maybe;
-	__int16 _pad;
+	uint8_t x;
+	uint8_t y;
+	uint8_t z;
+	uint8_t material;
+	uint16_t unk_level_maybe;
+	uint16_t _pad;
 };
 
 /* 113 */
 struct Item
 {
-	char category_id;
-	char item_id;
-	char field_2;
-	char field_3;
-	int modifier;
-	int field_8;
-	char rarity;
-	char material;
-	char adapted;
-	char field_F;
-	__int16 level;
-	__int16 field_12;
+	uint8_t category_id;
+	uint8_t item_id;
+	uint8_t field_2;
+	uint8_t field_3;
+	int32_t modifier;
+	int32_t field_8;
+	uint8_t rarity;
+	uint8_t material;
+	uint8_t adapted;
+	uint8_t field_F;
+	uint16_t level;
+	uint16_t field_12;
 	ItemAdaption customization_data[32];
-	int adaption_count;
+	int32_t adaption_count;
 };
 
 
@@ -137,4 +132,27 @@ struct BlockColor
 	uint8_t Type;
 
 	BlockColor(uint8_t _r, uint8_t _g, uint8_t _b, uint8_t _type) : Red(_r), Green(_g), Blue(_b), Type(_type) {}
+};
+
+
+struct Category
+{
+	union {
+		struct {
+			uint32_t CategoryID;
+			uint32_t ItemID;
+		};
+		uint64_t whole;
+	};
+	
+
+	friend bool operator<(const Category& l, const Category& r)
+	{
+		if (l.CategoryID == r.CategoryID) {
+			return l.ItemID < r.ItemID;
+		}
+		else {
+			return l.CategoryID < r.CategoryID;
+		}
+	}
 };

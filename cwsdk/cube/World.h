@@ -4,22 +4,30 @@
 #include "Creature.h"
 #include "../msvc_bincompat.h"
 #include "../non_cube.h"
+#include "Speech.h"
 
 namespace cube {
 	struct World
 	{
 		int vftable;
-		int EntitesMap;
+		MSVCBinCompat::map<uint64_t, cube::Creature*>* EntitesMap;
 		int field_8;
 		int field_C;
 		int field_10;
 		int field_14;
 		int field_18;
 		int field_1C;
+
+		STDVector cub_sprite_models;
+		/*
 		int field_20;
 		int field_24;
 		int field_28;
+		*/
+
 		int field_2C;
+
+		/*
 		int field_30;
 		int field_34;
 		int field_38;
@@ -42,6 +50,9 @@ namespace cube {
 		int field_7C;
 		int field_80;
 		int field_84;
+		*/
+		Speech speech;
+
 		int field_88;
 		int field_8C;
 		int field_90;
@@ -56,7 +67,7 @@ namespace cube {
 			Region *unk_regions[1048576];
 		} world_region_data;
 		int field_8000BC;
-		int critical_section;
+		int critical_section; // 0x8000C0
 		int field_8000C4;
 		int field_8000C8;
 		int field_8000CC;
@@ -73,27 +84,27 @@ namespace cube {
 		int field_8000F8;
 		int field_8000FC;
 		int field_800100;
-		int EntityNames;
+		MSVCBinCompat::map<uint32_t, MSVCBinCompat::wstring>* EntityNames;
 		int field_800108;
-		int PlaceableObjectNames;
+		MSVCBinCompat::map<uint32_t, MSVCBinCompat::wstring>* PlaceableObjectNames;
 		int field_800110;
-		int Skillnames;
+		MSVCBinCompat::map<uint32_t, MSVCBinCompat::wstring>* SkillNames;
 		int field_800118;
-		int AbilityNames;
+		MSVCBinCompat::map<uint32_t, MSVCBinCompat::wstring>* AbilityNames;
 		int field_800120;
-		int GeneralPlaceNameBinTreeMap;
+		MSVCBinCompat::map<Category, MSVCBinCompat::wstring>* PlaceNames;
 		int field_800128;
-		int CityQuarterNamesBinTreeMap;
+		MSVCBinCompat::map<Category, MSVCBinCompat::wstring>* CityQuarterNames;
 		int field_800130;
-		int ItemNames;
+		MSVCBinCompat::map<Category, MSVCBinCompat::wstring>* ItemNames;
 		int field_800138;
-		int OtherEntityNames;
+		MSVCBinCompat::map<MSVCBinCompat::wstring, uint32_t>* Inverse_EntityNames_Map;
 		int field_800140;
-		int OtherObjectNames;
+		MSVCBinCompat::map<MSVCBinCompat::wstring, uint32_t>* Inverse_PlaceableObjectNames_Map;
 		int field_800148;
-		int OtherItemNames;
+		MSVCBinCompat::map<MSVCBinCompat::wstring, uint32_t>* Inverse_ItemNames_Map;
 		int field_800150;
-		int UnkMap;
+		int UnkMap; // map<uint32_t, cube::Sprite*>*
 		int field_800158;
 		int Time;
 		int field_800160;
@@ -178,7 +189,11 @@ namespace cube {
 
 		void Lock();
 		void Unlock();
+		Zone* GetZone(int zone_x, int zone_y);
 		char SetBlock(int x, int y, int z, BlockColor* color_type, Zone* zone);
 		BlockColor* GetBlock(int x, int y, int z, Zone* zone);
+
+		// Essentially Copy+Pasted from ChrisMiuchiz
+		bool VoxelRayCast(Vector3<int64_t> origin, Vector3<double> direction, int64_t max_distance_in_blocks, Vector3<int64_t>* out_block, Vector3<int64_t>* out_face);
 	};
 };

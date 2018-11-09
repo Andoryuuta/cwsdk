@@ -1,11 +1,172 @@
 #pragma once
 
+#include <string>
+
 #include "../Vector3.h"
 #include "../non_cube.h"
 
 namespace cube {
 	struct Creature
 	{
+		enum class Race
+		{
+			ElfMale = 0,
+			ElfFemale = 1,
+			HumanMale = 2,
+			HumanFemale = 3,
+			GoblinMale = 4,
+			GoblinFemale = 5,
+			Bullterrier = 6,
+			LizardmanMale = 7,
+			LizardmanFemale = 8,
+			DwarfMale = 9,
+			DwarfFemale = 10,
+			OrcMale = 11,
+			OrcFemale = 12,
+			FrogmanMale = 13,
+			FrogmanFemale = 14,
+			UndeadMale = 15,
+			UndeadFemale = 16,
+			Skeleton = 17,
+			OldMan = 18,
+			Collie = 19,
+			ShepherdDog = 20,
+			SkullBull = 21,
+			Alpaca = 22,
+			BrownAlpaca = 23,
+			Egg = 24,
+			Turtle = 25,
+			Terrier = 26,
+			ScottishTerrier = 27,
+			Wolf = 28,
+			Panther = 29,
+			Cat = 30,
+			BrownCat = 31,
+			WhiteCat = 32,
+			Pig = 33,
+			Sheep = 34,
+			Bunny = 35,
+			Porcupine = 36,
+			GreenSlime = 37,
+			PinkSlime = 38,
+			YellowSlime = 39,
+			BlueSlime = 40,
+			Frightener = 41,
+			SandHorror = 42,
+			Wizard = 43,
+			Bandit = 44,
+			Witch = 45,
+			Ogre = 46,
+			Rockling = 47,
+			Gnoll = 48,
+			PolarGnoll = 49,
+			Monkey = 50,
+			Gnobold = 51,
+			Insectoid = 52,
+			Hornet = 53,
+			InsectGuard = 54,
+			Crow = 55,
+			Chicken = 56,
+			Seagull = 57,
+			Parrot = 58,
+			Bat = 59,
+			Fly = 60,
+			Midge = 61,
+			Mosquito = 62,
+			PlainRunner = 63,
+			LeafRunner = 64,
+			SnowRunner = 65,
+			DesertRunner = 66,
+			Peacock = 67,
+			Frog = 68,
+			PlantCreature = 69,
+			RadishCreature = 70,
+			Onionling = 71,
+			DesertOnionling = 72,
+			Devourer = 73,
+			Duckbill = 74,
+			Crocodile = 75,
+			SpikeCreature = 76,
+			Anubis = 77,
+			Horus = 78,
+			Jester = 79,
+			Spectrino = 80,
+			Djinn = 81,
+			Minotaur = 82,
+			NomadMale = 83,
+			NomadFemale = 84,
+			Imp = 85,
+			Spitter = 86,
+			Mole = 87,
+			Biter = 88,
+			Koala = 89,
+			Squirrel = 90,
+			Raccoon = 91,
+			Owl = 92,
+			Penguin = 93,
+			Werewolf = 94,
+			Zombie = 96,
+			Vampire = 97,
+			Horse = 98,
+			Camel = 99,
+			Cow = 100,
+			Dragon = 101,
+			BarkBeetle = 102,
+			FireBeetle = 103,
+			SnoutBeetle = 104,
+			LemonBeetle = 105,
+			Crab = 106,
+			SeaCrab = 107,
+			Troll = 108,
+			DarkTroll = 109,
+			HellDemon = 110,
+			Golem = 111,
+			EmberGolem = 112,
+			SnowGolem = 113,
+			Yeti = 114,
+			Cyclops = 115,
+			Mammoth = 116,
+			Lich = 117,
+			RuneGiant = 118,
+			Saurian = 119,
+			Bush = 120,
+			SnowBush = 121,
+			SnowBerryBush = 122,
+			CottonPlant = 123,
+			Scrub = 124,
+			CobwebScrub = 125,
+			FireScrub = 126,
+			Ginseng = 127,
+			Cactus = 128,
+			ThornTree = 130,
+			GoldDeposit = 131,
+			IronDeposit = 132,
+			SilverDeposit = 133,
+			SandstoneDeposit = 134,
+			EmeraldDeposit = 135,
+			SapphireDeposit = 136,
+			RubyDeposit = 137,
+			DiamondDeposit = 138,
+			IceCrystalDeposit = 139,
+			Scarecrow = 140,
+			Aim = 141,
+			Dummy = 142,
+			Vase = 143,
+			Bomb = 144,
+			SapphireFish = 145,
+			LemonFish = 146,
+			Seahorse = 147,
+			Mermaid = 148,
+			Merman = 149,
+			Shark = 150,
+			Bumblebee = 151,
+			LanternFish = 152,
+			MawFish = 153,
+			Piranha = 154,
+			Blowfish = 155,
+		};
+
+
 		int vftable;
 		int field_4;
 		int64_t GUID;
@@ -17,35 +178,35 @@ namespace cube {
 			Vector3<float> acceleration;
 			Vector3<float> retreat_force;
 			int head_rotation;
-			char physics_flags;
+			uint8_t physics_flags;
 			uint8_t field_4D;
 			char field_4E;
 			char field_4F;
-			char hostility_flags;
-			int race;
-			char skill_id;
+			uint8_t hostility_flags;
+			uint32_t race;
+			uint8_t skill_id;
 			int skill_timer;
 			int hit_counter;
 			int time_since_last_hit;
 			//struct {
-				char field_0;
+				char appearance_struct_field_0;
 				char field_1;
-				char hair_color_red;
-				char hair_color_green;
-				char hair_color_blue;
+				uint8_t hair_color_red;
+				uint8_t hair_color_green;
+				uint8_t hair_color_blue;
 				char field_5;
-				__int16 movement_flags;
+				uint16_t movement_flags;
 				float graphical_size;
 				float hitbox_size;
 				float physical_size;
-				__int16 face_id;
-				__int16 hair_id;
-				__int16 hands_id;
-				__int16 feet_id;
-				__int16 chest_id;
-				__int16 tail_id;
-				__int16 shoulder_id;
-				__int16 wings_id;
+				uint16_t face_id;
+				uint16_t hair_id;
+				uint16_t hands_id;
+				uint16_t feet_id;
+				uint16_t chest_id;
+				uint16_t tail_id;
+				uint16_t shoulder_id;
+				uint16_t wings_id;
 				float head_scale;
 				float chest_scale;
 				float hand_scale;
@@ -67,8 +228,8 @@ namespace cube {
 				Vector3<float> unk_position;
 				Vector3<float> wings_position;
 			//} subfields;
-			__int16 binary_toggles;
-			__int16 field_116;
+			uint16_t binary_toggles;
+			uint16_t field_116;
 			int rolling_duration;
 			float stun_timer;
 			int unknown_effect;
@@ -137,8 +298,11 @@ namespace cube {
 			int skill_level_class_4;
 			int skill_level_class_5;
 			int field_1154;
+			/*
 			int64_t field_1158;
 			int64_t field_1160;
+			*/
+			char name[16];
 		//} subfields;
 
 		int field_1178;
@@ -241,5 +405,11 @@ namespace cube {
 		int platinum_coins;
 		char other_stuff[2900];
 		int field_1E5C;
+
+
+		std::wstring GetName();
+		double DistanceFrom(Vector3<int64_t> point);
+		double DistanceFrom(Creature*);
+
 	};
 };

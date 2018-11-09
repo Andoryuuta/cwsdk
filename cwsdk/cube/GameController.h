@@ -5,6 +5,7 @@
 #include "Creature.h"
 #include "ChatWidget.h"
 #include "../msvc_bincompat.h"
+#include "../Matrix4x4.h"
 
 namespace cube {
 	struct GameController
@@ -89,18 +90,26 @@ namespace cube {
 		int field_134;
 		int field_138;
 		int field_13C;
+
+		Vector3<int64_t> camera_position;
+		Vector3<int64_t> camera_focus_position;
+
+		/*
 		int field_140;
 		int field_144;
 		int field_148;
 		int field_14C;
 		int field_150;
 		int field_154;
+
 		int field_158;
 		int field_15C;
 		int field_160;
 		int field_164;
 		int field_168;
 		int field_16C;
+		*/
+
 		int field_170;
 		int field_174;
 		int field_178;
@@ -114,78 +123,29 @@ namespace cube {
 		int field_198;
 		int field_19C;
 		int field_1A0;
-		int field_1A4;
-		int field_1A8;
-		int field_1AC;
-		int field_1B0;
-		int field_1B4;
-		int field_1B8;
-		int field_1BC;
-		int field_1C0;
-		int field_1C4;
-		int field_1C8;
-		int field_1CC;
-		int field_1D0;
-		int field_1D4;
+		Vector3<float> camera_current_rotation;
+		Vector3<float> camera_target_rotation;
+		float zoom_current_1;
+		float zoom_target;
+		float field_1C4; // unk_camera_float_current
+		float field_1C8; // unk_camera_float_target
+		float zoom_current_2; // current_zoom_2
+		float fog_distance_current;
+		float fog_distance_target;
 		int field_1D8;
 		int field_1DC;
 		int field_1E0;
 		int field_1E4;
 		int field_1E8;
-		int field_1EC;
-		int field_1F0;
-		int field_1F4;
-		int field_1F8;
-		int field_1FC;
-		int field_200;
-		int field_204;
-		int field_208;
-		int field_20C;
-		int field_210;
-		int field_214;
-		int field_218;
-		int field_21C;
-		int field_220;
-		int field_224;
-		int field_228;
-		int field_22C;
-		int field_230;
-		int field_234;
-		int field_238;
-		int field_23C;
-		int field_240;
-		int field_244;
-		int field_248;
-		int field_24C;
-		int field_250;
-		int field_254;
-		int field_258;
-		int field_25C;
-		int field_260;
-		int field_264;
-		int field_268;
-		int field_26C;
-		int field_270;
-		int field_274;
-		int field_278;
-		int field_27C;
-		int field_280;
-		int field_284;
-		int field_288;
-		int field_28C;
-		int field_290;
-		int field_294;
-		int field_298;
-		int field_29C;
-		int field_2A0;
-		int field_2A4;
-		int field_2A8;
-		int field_2AC;
-		int field_2B0;
+		Matrix4x4 camera_matrix_1;
+		Matrix4x4 camera_matrix_2;
+		Matrix4x4 camera_matrix_3;
+		int field_2AC; // Some chunk/zone/region related X
+		int field_2B0; // Some chunk/zone/region related X
 		int field_2B4;
 		int field_2B8;
-		int field_2BC;
-		int field_2C0;
+		int current_chunk_x;
+		int current_chunk_y;
 		int field_2C4;
 		int field_2C8;
 		int field_2CC;
@@ -281,7 +241,7 @@ namespace cube {
 		ChatWidget *ChatWidget;
 		uint8_t gap800A18[56];
 		int field_800A50;
-		MSVCBinCompat::string gc_worldname;
+		MSVCBinCompat::string worldname;
 		int field_800A6C;
 		int field_800A70;
 		int field_800A74;
@@ -289,6 +249,7 @@ namespace cube {
 		char the_rest_of_data[8389260];
 
 		void UpdateChunk(uint32_t x, uint32_t y);
+		bool CameraVoxelRaycast(int64_t max_distance_in_blocks, Vector3<int64_t>* out_block, Vector3<int64_t>* out_face);
 
 	};
 };
