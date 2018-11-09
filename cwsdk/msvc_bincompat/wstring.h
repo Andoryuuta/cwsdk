@@ -1,4 +1,5 @@
 #pragma once
+#include <iostream>
 #include <cstdint>
 #include <string>
 
@@ -17,11 +18,15 @@ namespace MSVCBinCompat {
 	public:
 		~wstring();
 		wstring();
+		void set(const wchar_t* c);
 		wstring(const wchar_t* c);
 		wstring(std::wstring s);
-		const wchar_t* c_str();
+		wstring(const wstring& s);
+		const wchar_t* c_str() const;
 		std::wstring std();
 		operator std::wstring();
+		void changed();
 	};
 }
 
+std::wostream& operator<< (std::wostream& os, MSVCBinCompat::wstring& dt);

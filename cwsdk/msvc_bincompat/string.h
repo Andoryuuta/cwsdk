@@ -17,10 +17,15 @@ namespace MSVCBinCompat{
 	public:
 		~string();
 		string();
+		void set(const char* c);
 		string(const char* c);
 		string(std::string s);
-		const char* c_str();
+		string(const string& s);
+		const char* c_str() const;
 		std::string std();
 		operator std::string();
+		void changed();
 	};
 };
+
+std::ostream& operator<< (std::ostream& os, MSVCBinCompat::string& dt);

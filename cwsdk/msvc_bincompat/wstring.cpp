@@ -1,5 +1,7 @@
 #include "wstring.h"
 
+#include <string>
+
 // Binary compatability for MS VC++ 11.0 / _MSC_VER=1700
 namespace MSVCBinCompat{
 	wstring::~wstring()
@@ -16,8 +18,8 @@ namespace MSVCBinCompat{
 		size = 0;
 		cap = 7;
 	}
-
-	wstring::wstring(const wchar_t* c) : wstring()
+	
+	void wstring::set(const wchar_t* c)
 	{
 		if (c != nullptr)
 		{
@@ -39,15 +41,18 @@ namespace MSVCBinCompat{
 				cap = len;
 			}
 		}
-		else
-		{
-			wstring();
-		}
+	}
+
+	wstring::wstring(const wchar_t* c) : wstring()
+	{
+		set(c);
 	}
 
 	wstring::wstring(std::wstring s) : wstring(s.c_str()) {}
 
-	const wchar_t* wstring::c_str()
+	wstring::wstring(const wstring& s) : wstring(s.c_str()) {}
+
+	const wchar_t* wstring::c_str() const
 	{
 		if (cap > 7)
 		{
@@ -67,4 +72,18 @@ namespace MSVCBinCompat{
 	wstring::operator std::wstring() {
 		return this->std();
 	}
+
+	void wstring::changed() {
+		auto data_ptr = this->c_str();
+		auto len = wcslen(data_ptr);
+		wchar_t* data = new wchar_t[len + 1];
+		memcpy(data, data_ptr, (len + 1) * 2);
+		set(data);
+		delete[] data;
+	}
 };
+
+std::wostream& operator<< (std::wostream& os, MSVCBinCompat::wstring& str) {
+	os << str.std();
+	return os;
+}

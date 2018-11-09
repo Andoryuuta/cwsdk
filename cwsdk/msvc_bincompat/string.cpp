@@ -1,7 +1,7 @@
 #include "string.h"
 
 // Binary compatability for MS VC++ 11.0 / _MSC_VER=1700
-namespace MSVCBinCompat{
+namespace MSVCBinCompat {
 	string::~string()
 	{
 		// Free memory if cap is greater than sbo size.
@@ -17,7 +17,7 @@ namespace MSVCBinCompat{
 		cap = 15;
 	}
 
-	string::string(const char* c) : string()
+	void string::set(const char* c)
 	{
 		if (c != nullptr)
 		{
@@ -39,15 +39,18 @@ namespace MSVCBinCompat{
 				cap = len;
 			}
 		}
-		else
-		{
-			string();
-		}
+	}
+
+	string::string(const char* c) : string()
+	{
+		set(c);
 	}
 
 	string::string(std::string s) : string(s.c_str()) {}
 
-	const char* string::c_str()
+	string::string(const string& s) : string(s.c_str()) {}
+
+	const char* string::c_str() const
 	{
 		if (cap > 15)
 		{
@@ -68,4 +71,17 @@ namespace MSVCBinCompat{
 		return this->std();
 	}
 
+	void string::changed() {
+		auto data_ptr = this->c_str();
+		auto len = strlen(data_ptr);
+		char* data = new char[len + 1];
+		memcpy(data, data_ptr, len + 1);
+		set(data);
+		delete[] data;
+	}
 };
+
+std::ostream& operator<< (std::ostream& os, MSVCBinCompat::string& str) {
+	os << str.c_str();
+	return os;
+}
