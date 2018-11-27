@@ -1,5 +1,5 @@
 #include "Vector3.h"
-#include "cube_funcs.h"
+//#include "cube_funcs.h"
 
 /*
 void Vector3<int64_t>::LoadFromVector3_float(Vector3<float>* vf)

@@ -11,7 +11,7 @@ public:
 	T Z = 0;
 
 	Vector3() {};
-	Vector3(T x, T y, T z) : X(x), Y(y), Z(z) {}
+	Vector3(T x, T y, T z) : X(x), Y(y), Z(z) {};
 	~Vector3() {};
 };
 

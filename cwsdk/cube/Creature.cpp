@@ -10,15 +10,15 @@
 namespace cube {
 	std::wstring Creature::GetName()
 	{
-		auto len = strnlen_s(this->name, 16);
+		auto len = strnlen_s(this->entity_data.name, 16);
 		if (len == 0)
 		{
 
 			MSVCBinCompat::wstring compat;
-			if (this->hostility_flags == 3 || this->movement_flags & 0x200)
+			if (this->entity_data.hostility_flags == 3 || this->entity_data.appearance.movement_flags & 0x200)
 			{
 				// "Rare" creature names
-				cube_funcs::instance()->generate_rare_creature_name(&compat, (uint32_t)this->GUID, this->race);
+				cube_funcs::instance()->generate_rare_creature_name(&compat, (uint32_t)this->GUID, this->entity_data.race);
 				return compat;
 			}
 			else
@@ -28,7 +28,7 @@ namespace cube {
 				// This is AWFUL for performance because it copies out the entire map. please fix me when I implement search in MSVCBinCompat::map.
 				auto gc = cube::GetGameController();
 				auto entity_localization_map = gc->world.EntityNames->CopyToSTDMap();
-				auto localization_key = entity_localization_map.find(this->race);
+				auto localization_key = entity_localization_map.find(this->entity_data.race);
 				if (localization_key == entity_localization_map.end())
 				{
 					return compat;
@@ -48,13 +48,13 @@ namespace cube {
 		else
 		{
 			std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
-			std::wstring wide = converter.from_bytes(this->name);
+			std::wstring wide = converter.from_bytes(this->entity_data.name);
 			return wide;
 		}
 	}
 
 	double Creature::DistanceFrom(Vector3<int64_t> point) {
-		auto p1 = this->position;
+		auto p1 = this->entity_data.position;
 		auto p2 = point;
 
 		auto x = p1.X - p2.X;
@@ -64,6 +64,6 @@ namespace cube {
 		return sqrt((x*x) + (y*y) + (z*z));
 	}
 	double Creature::DistanceFrom(Creature* target) {
-		return DistanceFrom(target->position);
+		return DistanceFrom(target->entity_data.position);
 	}
 };

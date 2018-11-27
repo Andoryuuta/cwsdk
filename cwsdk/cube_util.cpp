@@ -1,9 +1,11 @@
 #include "cube_util.h"
+
 #include <Windows.h>
 
 namespace cube {
 	namespace util {
-		cube::Creature* SpawnMonster(Vector3<int64_t> position, cube::Creature::Race race, uint32_t hostility_flags, uint32_t level) {
+
+		cube::Creature* SpawnCreature(Vector3<int64_t> position, cube::Creature::Race race, uint32_t hostility_flags, uint32_t level, uint64_t owner_guid) {
 			auto imageBase = (uint32_t)GetModuleHandleA(NULL);
 			auto gc = cube::GetGameController();
 
@@ -41,23 +43,29 @@ namespace cube {
 			*std_map_guid_creature_get_insert_node(&gc->world.EntitesMap, &guid) = creature;
 
 			// Setup the location and race
-			creature->position = position;
-			creature->race = (uint32_t)race;
-			creature->hostility_flags = hostility_flags;
-			//creature->parent_owner = 1;
-			creature->level = level;
+			creature->entity_data.position = position;
+			creature->entity_data.race = (uint32_t)race;
+			creature->entity_data.hostility_flags = hostility_flags;
+			//creature->entity_data.parent_owner = 1;
+			creature->entity_data.level = level;
 
 			// Call the graphical setup function that gets the proper models and offsets for the given race.
-			init_creature_graphics_by_race(&creature->race, &creature->appearance_struct_field_0, 0);
+			init_creature_graphics_by_race(&creature->entity_data.race, &creature->entity_data.appearance, 0);
 
 			// Init some basic behaviors as a "pet", but set the owner GUID to 0 so that is doesn't have an owner and attacks anyone.
 			// Don't know if this is a good way to do this, but it works for getting the spoopy mod released tonight.
-			cube_world_init_companion(&gc->world, 0, creature);
+			cube_world_init_companion(&gc->world, owner_guid, creature);
 
 			// Okay, I'm done, you can have this back if you want.....
 			gc->world.Unlock();
 
 			return creature;
 		}
+
+		cube::Creature* SpawnMonster(Vector3<int64_t> position, cube::Creature::Race race, uint32_t hostility_flags, uint32_t level) {
+			auto creature = SpawnCreature(position, race, hostility_flags, level, 0);
+			return creature;
+		}
+
 	};
 };

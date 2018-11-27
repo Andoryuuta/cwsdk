@@ -1,9 +1,10 @@
 #pragma once
 
 #include <cstdint>
-#include "Zone.h"
 
 namespace cube {
+	struct Zone;
+
 	struct Region
 	{
 		int vftable;

@@ -1,58 +1,30 @@
 #pragma once
 
-#include "Region.h"
-#include "Creature.h"
+#include <Windows.h>
+
 #include "../msvc_bincompat.h"
 #include "../non_cube.h"
 #include "Speech.h"
 
 namespace cube {
+	struct Creature;
+	struct Region;
+	struct Zone;
+	struct Sprite;
+
 	struct World
 	{
 		int vftable;
-		MSVCBinCompat::map<uint64_t, cube::Creature*>* EntitesMap;
+		MSVCBinCompat::map<uint64_t, Creature*>* EntitesMap;
 		int field_8;
-		int field_C;
+		MSVCBinCompat::map<uint64_t, void*>* AirshipMap;
 		int field_10;
 		int field_14;
 		int field_18;
-		int field_1C;
-
-		STDVector cub_sprite_models;
-		/*
-		int field_20;
-		int field_24;
-		int field_28;
-		*/
-
+		int sprite_manager_instance_start_vtable;
+		MSVCBinCompat::vector<Sprite*> cub_sprite_models; // 0x20
 		int field_2C;
-
-		/*
-		int field_30;
-		int field_34;
-		int field_38;
-		int field_3C;
-		int field_40;
-		int field_44;
-		int field_48;
-		int field_4C;
-		int field_50;
-		int field_54;
-		int field_58;
-		int field_5C;
-		int field_60;
-		int field_64;
-		int field_68;
-		int field_6C;
-		int field_70;
-		int field_74;
-		int field_78;
-		int field_7C;
-		int field_80;
-		int field_84;
-		*/
 		Speech speech;
-
 		int field_88;
 		int field_8C;
 		int field_90;
@@ -61,24 +33,11 @@ namespace cube {
 		int field_B0;
 		int field_B4;
 		Creature *local_player;
-		struct
-		{
-			Region *main_regions[1048576];
-			Region *unk_regions[1048576];
-		} world_region_data;
+		Region *main_regions[1024][1024];
+		Region *unk_regions[1024][1024];
 		int field_8000BC;
-		int critical_section; // 0x8000C0
-		int field_8000C4;
-		int field_8000C8;
-		int field_8000CC;
-		int field_8000D0;
-		int field_8000D4;
-		int field_8000D8;
-		int field_8000DC;
-		int field_8000E0;
-		int field_8000E4;
-		int field_8000E8;
-		int field_8000EC;
+		_RTL_CRITICAL_SECTION critical_section; // Used for all generic World locking. (0x8000C0)
+		_RTL_CRITICAL_SECTION block_op_critical_section; // Used for all block operations (region, zone, field, addition/change/deletion) in conjunction with the previous lock. (0x8000D8)
 		int field_8000F0;
 		int field_8000F4;
 		int field_8000F8;

@@ -171,7 +171,7 @@ namespace cube {
 		int field_4;
 		int64_t GUID;
 
-		//struct {
+		struct {
 			Vector3<int64_t> position;
 			Vector3<float> rotation;
 			Vector3<float> velocity;
@@ -188,7 +188,7 @@ namespace cube {
 			int skill_timer;
 			int hit_counter;
 			int time_since_last_hit;
-			//struct {
+			struct {
 				char appearance_struct_field_0;
 				char field_1;
 				uint8_t hair_color_red;
@@ -227,7 +227,10 @@ namespace cube {
 				Vector3<float> feet_position;
 				Vector3<float> unk_position;
 				Vector3<float> wings_position;
-			//} subfields;
+			} appearance;
+
+			// 0x0010 = Glider
+			// 0x0200 = Light
 			uint16_t binary_toggles;
 			uint16_t field_116;
 			int rolling_duration;
@@ -303,7 +306,7 @@ namespace cube {
 			int64_t field_1160;
 			*/
 			char name[16];
-		//} subfields;
+		} entity_data;
 
 		int field_1178;
 		int field_117C;

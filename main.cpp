@@ -1,10 +1,14 @@
 #include <windows.h>
 #include <cstdio>
 #include <iostream>
+#include <fstream>
+#include <iomanip>
 #include <string>
 #include <cstdint>
 #include <sstream>
 #include <vector>
+#include <bitset>
+#include <map>
 
 #include "cwsdk.h"
 
@@ -21,107 +25,98 @@ void OpenConsole()
 	freopen_s(&cerrStream, "CONOUT$", "w", stderr);
 }
 
-void print_pos() {
+// Prints the world map of `cube::Creature`s.
+void print_entities() {
+
 	auto gc = cube::GetGameController();
-	gc->ChatWidget->Print(L"X: ", Color::Green());
-	gc->ChatWidget->Print(std::to_wstring(gc->local_player->position.X) + L"\n", Color::White());
-	gc->ChatWidget->Print(L"Y: ", Color::Green());
-	gc->ChatWidget->Print(std::to_wstring(gc->local_player->position.Y) + L"\n", Color::White());
-	gc->ChatWidget->Print(L"Z: ", Color::Green());
-	gc->ChatWidget->Print(std::to_wstring(gc->local_player->position.Z) + L"\n", Color::White());
+	auto stdMap = gc->world.EntitesMap->CopyToSTDMap();
+
+	for (auto const& x : stdMap)
+	{
+		auto key = x.first;
+		auto val = x.second;
+
+		std::cout << "cube::Creature addr: " << std::hex << val << std::endl;
+		std::wcout << L"\tName: " << val->GetName() << std::endl;
+		std::cout << "\tGUID: " << std::dec << val->GUID << std::endl;
+		std::cout << "\tShown on map / Objective boss:" << (val->entity_data.appearance.movement_flags & 0x2000) << std::endl;
+		std::cout << "\thostility_flags: " << std::hex << std::bitset<32>(val->entity_data.hostility_flags) << std::endl;
+		std::cout << "\tmovement_flags: " << std::hex << std::bitset<32>(val->entity_data.appearance.movement_flags) << std::endl;
+
+		if (key != gc->local_player->GUID) {
+			//val->parent_owner = gc->local_player->GUID;
+			std::cout << "\tdistance in blocks:" << std::dec << gc->local_player->DistanceFrom(val) / 65536 << std::endl;
+			//val->hostility_flags = 0x0;
+		}
+	}
 }
 
+
+void add_petfood() {
+	auto gc = cube::GetGameController();
+
+
+
+	// Get our current zone.
+	int zone_x = (gc->local_player->entity_data.position.X / 65536) / 256;
+	int zone_y = (gc->local_player->entity_data.position.Y / 65536) / 256;
+	cube::Zone* cur_zone = gc->world.GetZone(zone_x, zone_y);
+
+	gc->world.Lock();
+	for (int i = 0; i <= 155; i++) {
+		// make the pickupable_object and use the game's default constructor for init values.
+		zone_pickupable_object obj;
+
+		// Make the petfood item(s)
+		obj.item.category_id = 20;
+		obj.item.item_id = i;
+
+		obj.position = gc->local_player->entity_data.position;
+		obj.position.X += (i - 5) * 65536; // offset by 5 blocks every iteration
+
+		// append the object to the zones objects vector.
+		cur_zone->pickupable_objects.push_back(obj);
+	}
+	gc->world.Unlock();
+}
 
 DWORD WINAPI MyFunc(LPVOID lpvParam) {
 	OpenConsole();
 	cube::InitGlobals();
 	auto gc = cube::GetGameController();
+	print_entities();
 
-	while(true){
-		try
-		{
-			// Key H down
-			if (GetAsyncKeyState(0x48) & 0x8000) {
-
-				// Get the looking-at block offset by using some incomprehensible function
-				// to convert from the vec3 float camera offset to vec3 int64 position offset.
-				Vector3<int64_t> looking_at_offset = Vector3<int64_t>();
-				looking_at_offset.LoadFromVector3_float(&gc->local_player->camera_offset); 
-
-				Vector3<int64_t> pos = gc->local_player->position;
-
-				Vector3<int64_t> block_pos;
-				block_pos.X = (looking_at_offset.X + pos.X);
-				block_pos.Y = (looking_at_offset.Y + pos.Y);
-				block_pos.Z = (looking_at_offset.Z + pos.Z);
-
-				/*
-				std::cout << "\nHIX: " << block_pos.X << std::endl;
-				std::cout << "Y: " << block_pos.Y << std::endl;
-				std::cout << "Z: " << block_pos.Z << std::endl;
-				*/
-
-				// Get block at position
-				//auto block = gc->world.GetBlock(v->X, v->Y, v->Z, (cube::Zone*)nullptr);
-				//std::cout << "R:" << (uint32_t)block->Red << ", G:" << (uint32_t)block->Green << ", B:" << (uint32_t)block->Blue << ", type:" << (uint32_t)block->Type << std::endl;
-				gc->world.Lock();
-
-
-				BlockColor color = BlockColor(0, 255, 125, 1);
-				gc->world.SetBlock(block_pos.X / 0x10000, block_pos.Y / 0x10000, block_pos.Z / 0x10000, &color, (cube::Zone*)nullptr);
-				gc->UpdateChunk(block_pos.X / 0x200000, block_pos.Y / 0x200000);
-
-				gc->world.Unlock();
-
-				Sleep(200);
+	try
+	{
+		while (true) {
+			if (GetAsyncKeyState((int)'H') & 0x8000) {
+				cube::Creature* creature = cube::util::SpawnMonster(gc->local_player->entity_data.position, cube::Creature::Race::Cow, 1, gc->local_player->entity_data.level);
+				gc->ChatWidget->Print(L"Spawned ", Color::White());
+				gc->ChatWidget->Print(creature->GetName(), Color::Green());
+				gc->ChatWidget->Print(L"\n", Color::White());
+				Sleep(250);
 			}
-			
-			// J key
-			if (GetAsyncKeyState(0x4A) & 0x8000) {
+
+			if (GetAsyncKeyState((int)'N') & 0x8000) {
+				add_petfood();
+				gc->ChatWidget->Print(L"Spawned petfood objects.\n", Color::White());
+				Sleep(1000);
+			}
+
+			if (GetAsyncKeyState((int)'J') & 0x8000) {
+				gc->ChatWidget->Print(L"Ending cwsdk test.\n", Color::Blue());
+				std::cout << "Exit!" << std::endl;
 				break;
 			}
+		}
 
-		}
-		catch (const std::exception&)
-		{
-			std::cout << "Got exception!" << std::endl;
-		}
 		Sleep(20);
 	}
-
-
-	/*
-	std::cout << *cube::gravity << std::endl;
-	auto real_grav = *cube::gravity;
-	*cube::gravity = 1.0f;
-	Sleep(30 * 1000);
-	*cube::gravity = real_grav;
-	*/
-
-
-
-
-	//print_pos();
-
-	/*
-	auto gc = cube::GetGameController();
-	while(true) {
-
-		// Wait until user is typing to send message and break.
-		if (gc->ChatWidget->is_typing_message) {
-			gc->ChatWidget->Print(L"ChrisMiuchiz", Color::Green());
-			gc->ChatWidget->Print(L" : hi. I've noticed that you're typing.\n", Color::White());
-			break;
-		}
-
-		Sleep(5000);
+	catch (const std::exception&)
+	{
+		std::cout << "got exception" << std::endl;
 	}
-	*/
 
-
-
-	std::cout << "Done!" << std::endl;
-	//getchar();
 	return 0;
 }
 
