@@ -1,0 +1,99 @@
+#pragma once
+
+#include <Windows.h>
+#include <cstdint>
+
+namespace plasma {
+	class SmoothMeshShape : MeshShape {
+	public:
+		struct {
+			uint32_t field_0;
+			uint32_t field_4;
+			uint32_t field_8;
+			uint32_t field_C;
+			uint32_t field_10;
+			uint32_t field_14;
+			uint32_t field_18;
+			uint32_t field_1C;
+			uint32_t field_20;
+			uint32_t field_24;
+			uint32_t field_28;
+			uint32_t field_2C;
+			uint32_t field_30;
+			uint32_t field_34;
+			uint32_t field_38;
+			uint32_t field_3C;
+			uint32_t field_40;
+			uint32_t field_44;
+			uint32_t field_48;
+			uint32_t field_4C;
+			uint32_t field_50;
+			uint32_t field_54;
+			uint32_t field_58;
+			uint32_t field_5C;
+		} substructs[6];;
+		uint32_t field_B20;
+		uint32_t field_B24;
+		uint16_t field_B28;
+		uint32_t field_B2C;
+		uint32_t field_B30;
+		uint32_t field_B34;
+		uint32_t field_B38;
+		uint32_t field_B3C;
+		uint32_t field_B40;
+		uint32_t field_B44;
+		uint32_t field_B48;
+		uint32_t field_B4C;
+		uint32_t field_B50;
+		uint32_t field_B54;
+		uint32_t field_B58;
+		uint32_t field_B5C;
+		uint32_t field_B60;
+		uint32_t field_B64;
+		uint32_t field_B68;
+		uint32_t field_B6C;
+		uint32_t field_B70;
+		uint32_t field_B74;
+		uint32_t field_B78;
+		uint32_t field_B7C;
+		uint32_t field_B80;
+		uint32_t field_B84;
+		uint32_t field_B88;
+		uint32_t field_B8C;
+		uint32_t field_B90;
+		uint32_t field_B94;
+		uint32_t field_B98;
+		uint32_t field_B9C;
+		uint32_t field_BA0;
+		uint32_t field_BA4;
+		uint32_t field_BA8;
+		uint32_t field_BAC;
+		uint32_t field_BB0;
+		uint32_t field_BB4;
+		uint32_t field_BB8;
+		uint32_t field_BBC;
+		uint32_t field_BC0;
+		uint32_t field_BC4;
+		uint32_t field_BC8;
+		uint32_t field_BCC;
+		uint32_t field_BD0;
+		uint32_t field_BD4;
+		uint32_t field_BD8;
+		uint32_t field_BDC;
+		uint32_t field_BE0;
+		uint32_t field_BE4;
+		uint32_t field_BE8;
+		float field_BEC;
+		float field_BF0;
+		uint32_t field_BF4;
+		uint32_t field_BF8;
+		uint32_t field_BFC;
+		uint32_t field_C00;
+		uint32_t field_C04;
+		uint32_t field_C08;
+		uint32_t field_C0C;
+		uint32_t field_C10;
+		uint32_t field_C14;
+		_RTL_CRITICAL_SECTION CriticalSection;
+	};
+};
