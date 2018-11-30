@@ -5,6 +5,7 @@
 #include "../msvc_bincompat.h"
 #include "../non_cube.h"
 #include "Speech.h"
+#include "SpriteManager.h"
 
 namespace cube {
 	struct Creature;
@@ -21,9 +22,7 @@ namespace cube {
 		int field_10;
 		int field_14;
 		int field_18;
-		int sprite_manager_instance_start_vtable;
-		MSVCBinCompat::vector<Sprite*> cub_sprite_models; // 0x20
-		int field_2C;
+		SpriteManager sprite_manager;
 		Speech speech;
 		int field_88;
 		int field_8C;

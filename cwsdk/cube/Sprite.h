@@ -1,8 +1,13 @@
 #pragma once
 
 #include <cstdint>
+#include <string>
+#include "../msvc_bincompat.h"
+#include "../dx9_stub.h"
 
 namespace cube {
+	struct Database;
+
 	struct Sprite
 	{
 		uint32_t field_0;
@@ -30,9 +35,12 @@ namespace cube {
 		uint8_t field_55;
 		uint8_t field_56;
 		uint8_t field_57;
-		void* Direct3DDevice9;
+		LPDIRECT3DDEVICE9 Direct3DDevice9;
 		uint16_t field_5C;
 		uint8_t field_5E;
 		uint8_t field_5F;
+
+		Sprite(LPDIRECT3DDEVICE9 device, uint32_t unk_set_0 = 0);
+		void LoadFromCubFile(std::string filename, cube::Database* db = nullptr, uint32_t unk_set_1 = 1);
 	};
 };

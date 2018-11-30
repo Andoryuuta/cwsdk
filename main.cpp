@@ -97,16 +97,91 @@ DWORD WINAPI MyFunc(LPVOID lpvParam) {
 				Sleep(250);
 			}
 
+			if (GetAsyncKeyState((int)'K') & 0x8000) {
+				auto sprite_id = 2563; // cow id = 352
+
+				auto orginal_sprite = gc->world.sprite_manager.sprites[sprite_id];
+				std::vector<cube::Sprite*> anim_sprites;
+
+				// Meh. code. not clean, but works.
+				auto sprite = new cube::Sprite(gc->world.sprite_manager.D3D9Device);
+				sprite->LoadFromCubFile(R"(Mods\cwsdk_data\cow-head-0.cub)");
+				anim_sprites.push_back(sprite);
+				sprite = new cube::Sprite(gc->world.sprite_manager.D3D9Device);
+				sprite->LoadFromCubFile(R"(Mods\cwsdk_data\cow-head-1.cub)");
+				anim_sprites.push_back(sprite);
+				sprite = new cube::Sprite(gc->world.sprite_manager.D3D9Device);
+				sprite->LoadFromCubFile(R"(Mods\cwsdk_data\cow-head-2.cub)");
+				anim_sprites.push_back(sprite);
+				sprite = new cube::Sprite(gc->world.sprite_manager.D3D9Device);
+				sprite->LoadFromCubFile(R"(Mods\cwsdk_data\cow-head-3.cub)");
+				anim_sprites.push_back(sprite);
+				sprite = new cube::Sprite(gc->world.sprite_manager.D3D9Device);
+				sprite->LoadFromCubFile(R"(Mods\cwsdk_data\cow-head-4.cub)");
+				anim_sprites.push_back(sprite);
+				sprite = new cube::Sprite(gc->world.sprite_manager.D3D9Device);
+				sprite->LoadFromCubFile(R"(Mods\cwsdk_data\cow-head-5.cub)");
+				anim_sprites.push_back(sprite);
+				sprite = new cube::Sprite(gc->world.sprite_manager.D3D9Device);
+				sprite->LoadFromCubFile(R"(Mods\cwsdk_data\cow-head-6.cub)");
+				anim_sprites.push_back(sprite);
+
+				for(int loop_count = 0; loop_count < 10000; loop_count++)
+				{
+					// Break if the user presses L
+					if (GetAsyncKeyState((int)'L') & 0x8000) {
+						break;
+					}
+
+					for (int i = 0; i < anim_sprites.size(); i++) {
+						gc->world.Lock();
+						gc->world.sprite_manager.sprites[sprite_id] = anim_sprites[i];
+						gc->world.Unlock();
+						Sleep(150);
+					}
+
+					for (int i = anim_sprites.size(); i > 0; i--) {
+						gc->world.Lock();
+						gc->world.sprite_manager.sprites[sprite_id] = anim_sprites[i];
+						gc->world.Unlock();
+						Sleep(150);
+					}
+				}
+
+				// TODO: look this up and make sure it frees memory properly.
+				// Cleanup.
+				for (auto s : anim_sprites) {
+					delete s;
+				}
+
+
+				gc->world.sprite_manager.sprites[sprite_id] = orginal_sprite;
+			}
+
+			/*
 			if (GetAsyncKeyState((int)'N') & 0x8000) {
 				add_petfood();
 				gc->ChatWidget->Print(L"Spawned petfood objects.\n", Color::White());
 				Sleep(1000);
 			}
+			*/
 
 			if (GetAsyncKeyState((int)'J') & 0x8000) {
 				gc->ChatWidget->Print(L"Ending cwsdk test.\n", Color::Blue());
 				std::cout << "Exit!" << std::endl;
 				break;
+			}
+			
+
+			// Clear chat
+			if (GetAsyncKeyState((int)'Z') & 0x8000) {
+				gc->ChatWidget->Print(L"\n", Color::White());
+				gc->ChatWidget->Print(L"\n", Color::White());
+				gc->ChatWidget->Print(L"\n", Color::White());
+				gc->ChatWidget->Print(L"\n", Color::White());
+				gc->ChatWidget->Print(L"\n", Color::White());
+				gc->ChatWidget->Print(L"\n", Color::White());
+				gc->ChatWidget->Print(L"\n", Color::White());
 			}
 		}
 

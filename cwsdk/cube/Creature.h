@@ -178,6 +178,8 @@ namespace cube {
 			Vector3<float> acceleration;
 			Vector3<float> retreat_force;
 			int head_rotation;
+
+			// 0b00000100 = Touching wall
 			uint8_t physics_flags;
 			uint8_t field_4D;
 			char field_4E;
@@ -229,6 +231,7 @@ namespace cube {
 				Vector3<float> wings_position;
 			} appearance;
 
+			// 0x0001 = Climbing
 			// 0x0010 = Glider
 			// 0x0200 = Light
 			uint16_t binary_toggles;

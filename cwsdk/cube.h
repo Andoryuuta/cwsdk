@@ -10,6 +10,7 @@
 #include "./cube/Field.h"
 #include "./cube/Region.h"
 #include "./cube/Speech.h"
+#include "./cube/SpriteManager.h"
 #include "./cube/Sprite.h"
 #include "./cube/World.h"
 #include "./cube/WorldMap.h"
@@ -24,6 +25,7 @@ assert_size(cube::Field, 0x20)
 assert_size(cube::Region, 0x15A28)
 assert_size(cube::Speech, 0x58)
 assert_size(cube::Sprite, 0x60)
+assert_size(cube::SpriteManager, 0x14)
 assert_size(cube::World, 0x80029C) // Only instanced once, may be incorrect.
 assert_size(cube::WorldMap, 0x800108) // Only instanced once, may be incorrect.
 assert_size(cube::Zone, 0xc8)
