@@ -51,7 +51,7 @@ namespace cube {
 		uint32_t field_128;
 		uint32_t field_12C;
 		uint32_t field_130;
-		void* SomeDirect3DDevice9;
+		LPDIRECT3DDEVICE9 SomeDirect3DDevice9;
 		uint32_t field_138;
 		uint32_t field_13C;
 		Vector3<int64_t> camera_position;
