@@ -34,6 +34,7 @@ assert_size(cube::Zone, 0xc8)
 #include "cube_util.h"
 
 namespace cube {
+	GameController* BusywaitForGameController();
 	GameController* GetGameController();
 	void InitAPI();
 }
