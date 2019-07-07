@@ -337,12 +337,12 @@ namespace cube {
 		int field_11D4;
 		int field_11D8;
 		STDVector Inventory_Tabs_Vec;
-		int field_11E8;
+		int selected_item_count;
 		int field_11EC;
 		int field_11F0;
 		int field_11F4;
 		int field_11F8;
-		int field_11FC;
+		int selected_item_level;
 		int field_1200;
 		int field_1204;
 		int field_1208;
